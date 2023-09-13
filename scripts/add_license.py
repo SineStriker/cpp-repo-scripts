@@ -53,12 +53,12 @@ def main():
     copyright_comments.append(
         " ****************************************************************************/\n")
 
-    i = 0
-    count = len(source_files)
+    count = 0
+    total = len(source_files)
     for file in source_files:
-        i += 1
+        count += 1
         if args.verbose:
-            print(f"[{i}/{count}] Process {file}")
+            print(f"[{count}/{total}] Process {file}")
 
         with open(file, "r", encoding="utf-8-sig") as f:
             lines = f.readlines()

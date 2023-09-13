@@ -44,12 +44,12 @@ def main():
             if file.endswith(("_p.h", "_p.hpp")):
                 header_files.append(os.path.join(root, file))
 
-    i = 0
-    count = len(header_files)
+    count = 0
+    total = len(header_files)
     for file in header_files:
-        i += 1
+        count += 1
         if args.verbose:
-            print(f"[{i}/{count}] Process {file}")
+            print(f"[{count}/{total}] Process {file}")
 
         with open(file, "r", encoding="utf-8-sig") as f:
             lines = f.readlines()
@@ -61,9 +61,9 @@ def main():
 
             # Header guard
             if line.startswith("#ifndef"):
-                if i+1 >= len(lines):
+                if i + 1 >= len(lines):
                     break
-                next_line = lines[i+1].lstrip().rstrip()
+                next_line = lines[i + 1].lstrip().rstrip()
                 if not next_line.startswith("#define"):
                     break
                 if line[7:].lstrip().rstrip() != next_line[7:].lstrip().rstrip():

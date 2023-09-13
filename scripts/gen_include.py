@@ -49,8 +49,8 @@ def main():
         else:
             os.remove(dest_dir)
 
-    i = 0
-    count = len(header_files)
+    count = 0
+    total = len(header_files)
     for file in header_files:
         name, _ = os.path.splitext(os.path.basename(file))
 
@@ -66,9 +66,9 @@ def main():
 
         new_file = os.path.join(dir, os.path.basename(file))
 
-        i += 1
+        count += 1
         if args.verbose:
-            print(f"[{i}/{count}] Generate {new_file}")
+            print(f"[{count}/{total}] Generate {new_file}")
 
         if args.copy:
             shutil.copyfile(file, new_file)
