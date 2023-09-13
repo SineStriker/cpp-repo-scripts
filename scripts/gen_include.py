@@ -10,7 +10,7 @@ import shutil
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Deploy ChorusKit Application on Windows")
+        description="Generate include files from source directory into a new directory tiledly")
     parser.add_argument("--src", metavar="<path>",
                         help="Source directory.", type=str, required=True)
     parser.add_argument("--dest", metavar="<path>",
@@ -20,15 +20,15 @@ def main():
     parser.add_argument(
         "--rm", help="Remove destination directory first.", action="store_true")
     parser.add_argument(
-        "--verbose", help="Show deploy progress.", action="store_true")
+        "--verbose", help="Show progress.", action="store_true")
     args = parser.parse_args()
 
     src_dir: str = args.src
-    if os.path.isabs(src_dir):
+    if not os.path.isabs(src_dir):
         src_dir = os.path.abspath(src_dir)
 
     dest_dir: str = args.dest
-    if os.path.isabs(dest_dir):
+    if not os.path.isabs(dest_dir):
         src_dir = os.path.abspath(dest_dir)
 
     if not os.path.isdir(src_dir):
@@ -49,6 +49,8 @@ def main():
         else:
             os.remove(dest_dir)
 
+    i = 0
+    count = len(header_files)
     for file in header_files:
         name, _ = os.path.splitext(os.path.basename(file))
 
@@ -63,6 +65,10 @@ def main():
             os.makedirs(dir)
 
         new_file = os.path.join(dir, os.path.basename(file))
+
+        i += 1
+        if args.verbose:
+            print(f"[{i}/{count}] Generate {new_file}")
 
         if args.copy:
             shutil.copyfile(file, new_file)
