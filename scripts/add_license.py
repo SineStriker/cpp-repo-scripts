@@ -69,6 +69,12 @@ def main():
         while len(lines) > 0:
             line = lines[0].lstrip().rstrip()
 
+            # End of comment
+            if "*/" in line and is_comment:
+                is_comment = False
+                del (lines[0])
+                continue
+
             # Empty or comment
             if line == "" or is_comment:
                 del (lines[0])
@@ -83,11 +89,6 @@ def main():
                 del (lines[0])
                 continue
 
-            if "*/" in line and is_comment:
-                is_comment = False
-                del (lines[0])
-                continue
-
             # Header guard
             if line.startswith("#ifndef") or line.startswith("#pragma"):
                 header_guard_found = True
@@ -99,7 +100,7 @@ def main():
 
         with open(file, "w", encoding="utf-8") as f:
             f.writelines(copyright_comments)
-            f.write("\n\n")
+            f.write("\n")
             f.writelines(lines)
 
 
